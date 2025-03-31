@@ -35,6 +35,21 @@ async def overflow(interaction: discord.Interaction, hp: float, dmg: float):
 
     await interaction.response.send_message(embed=embed)
 
+# Command: /ofm - Calculates Required DMG for Full Overflow
+@bot.tree.command(name="ofm", description="Calculate required DMG for full overflow time.")
+@app_commands.describe(hp="Enter HP value")
+async def overflow_max(interaction: discord.Interaction, hp: float):
+    dmg = hp / 0.2222  # Calculate required damage
+
+    # Create embed
+    embed = discord.Embed(title="FULL OVERFLOW DAMAGE REQUIREMENT", color=discord.Color.green())
+    embed.add_field(name="Boss HP", value=f"{hp}", inline=True)
+    embed.add_field(name="Equation", value=f"DMG = {hp} / 0.2222", inline=False)
+    embed.add_field(name="You will need to deal:", value=f"**{dmg:.2f}** DMG\nin order to get full overflow time.", inline=False)
+
+    await interaction.response.send_message(embed=embed)
+
+
 # Sync commands on bot startup
 @bot.event
 async def on_ready():
