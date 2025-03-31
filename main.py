@@ -9,7 +9,7 @@ from myserver import server_on
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# Create slash command
+# Command: /of - Calculates Overflow Time
 @bot.tree.command(name="of", description="Calculate Overflow using HP and DMG.")
 @app_commands.describe(hp="Enter HP value", dmg="Enter DMG value")
 async def overflow(interaction: discord.Interaction, hp: float, dmg: float):
@@ -17,11 +17,11 @@ async def overflow(interaction: discord.Interaction, hp: float, dmg: float):
         await interaction.response.send_message("Error: DMG cannot be zero.", ephemeral=True)
         return
     
-     # Calculate overflow time
+    # Calculate overflow time
     time = 110 - (90 * (hp / dmg))
-    time = min(time, 90)  # Cap time at 90
-    
-    # Convert to minutes and seconds format
+    time = min(time, 90)  # Cap at 90 seconds
+
+    # Convert to minutes and seconds
     minutes = int(time // 60)
     seconds = int(time % 60)
     formatted_time = f"{minutes}:{seconds:02d}"
@@ -49,13 +49,12 @@ async def overflow_max(interaction: discord.Interaction, hp: float):
 
     await interaction.response.send_message(embed=embed)
 
-
 # Sync commands on bot startup
 @bot.event
 async def on_ready():
     await bot.tree.sync()
     print(f"Logged in as {bot.user}")
-
+    
 server_on()
 
 # Run the bot
