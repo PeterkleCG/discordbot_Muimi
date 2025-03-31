@@ -17,10 +17,23 @@ async def overflow(interaction: discord.Interaction, hp: float, dmg: float):
         await interaction.response.send_message("Error: DMG cannot be zero.", ephemeral=True)
         return
     
+     # Calculate overflow time
     time = 110 - (90 * (hp / dmg))
-    time = min(time, 90)  # Ensure time does not exceed 90
+    time = min(time, 90)  # Cap time at 90
     
-    await interaction.response.send_message(f"Calculated Overflow Time: `{time:.2f}`")
+    # Convert to minutes and seconds format
+    minutes = int(time // 60)
+    seconds = int(time % 60)
+    formatted_time = f"{minutes}:{seconds:02d}"
+
+    # Create embed
+    embed = discord.Embed(title="OVERFLOW TIME GIVEN WITH DAMAGE", color=discord.Color.blue())
+    embed.add_field(name="Boss HP", value=f"{hp}", inline=True)
+    embed.add_field(name="Damage Dealt", value=f"{dmg}", inline=True)
+    embed.add_field(name="Equation", value=f"overflow (seconds) = 110 - (90 * ({hp} / {dmg}))", inline=False)
+    embed.add_field(name="Result", value=f"overflow (seconds) = `{time:.2f}` ({formatted_time})", inline=False)
+
+    await interaction.response.send_message(embed=embed)
 
 # Sync commands on bot startup
 @bot.event
