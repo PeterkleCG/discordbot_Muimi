@@ -9,6 +9,11 @@ from myserver import server_on
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix="!", intents=intents)
 
+@bot.command()
+async def sync(ctx):
+    await bot.tree.sync()
+    await ctx.send("Slash commands synced!")
+
 # Command: /of - Calculates Overflow Time
 @bot.tree.command(name="of", description="Calculate Overflow using HP and DMG.")
 @app_commands.describe(hp="Enter HP value", dmg="Enter DMG value")
