@@ -62,9 +62,13 @@ async def of2(interaction: discord.Interaction, hp: float, dmg1: float, dmg2: fl
         await interaction.response.send_message("Error: DMG values cannot be zero.", ephemeral=True)
         return
 
+    # Calculate Score1 and Score2
+    score1 = hp - dmg2
+    score2 = hp - dmg1
+
     # Calculate Time1 and Time2
-    time1 = 110 - (90 * ((hp - dmg2) / dmg1))
-    time2 = 110 - (90 * ((hp - dmg1) / dmg2))
+    time1 = 110 - (90 * (score1 / dmg1))
+    time2 = 110 - (90 * (score2 / dmg2))
     time1 = min(time1, 90)  # Cap at 90 seconds
     time2 = min(time2, 90)
 
@@ -80,9 +84,10 @@ async def of2(interaction: discord.Interaction, hp: float, dmg1: float, dmg2: fl
 
     # Section for Damage 1
     embed.add_field(name="🔹 Damage Dealt 1", value=f"**{dmg1}**", inline=False)
+    embed.add_field(name="Score 1", value=f"**HP - DMG2 = {hp} - {dmg2} = {score1}**", inline=False)
     embed.add_field(
         name="Equation 1",
-        value=f"overflow (seconds) = 110 - [90 × (({hp} - {dmg2}) ÷ {dmg1})]",
+        value=f"overflow (seconds) = 110 - [90 × ({score1} ÷ {dmg1})]",
         inline=False
     )
     embed.add_field(
@@ -91,13 +96,14 @@ async def of2(interaction: discord.Interaction, hp: float, dmg1: float, dmg2: fl
         inline=False
     )
 
-    embed.add_field(name="\u200b", value="━━━━━━━━━━━━━━━━━━━━━━", inline=False)  # Stylish divider
+    embed.add_field(name="\u200b", value="━━━━━━━━━━━━━━━━━━━━━━", inline=False)  # Divider line
 
     # Section for Damage 2
     embed.add_field(name="🔹 Damage Dealt 2", value=f"**{dmg2}**", inline=False)
+    embed.add_field(name="Score 2", value=f"**HP - DMG1 = {hp} - {dmg1} = {score2}**", inline=False)
     embed.add_field(
         name="Equation 2",
-        value=f"overflow (seconds) = 110 - [90 × (({hp} - {dmg1}) ÷ {dmg2})]",
+        value=f"overflow (seconds) = 110 - [90 × ({score2} ÷ {dmg2})]",
         inline=False
     )
     embed.add_field(
