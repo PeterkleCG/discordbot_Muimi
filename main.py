@@ -54,6 +54,38 @@ async def overflow_max(interaction: discord.Interaction, hp: float):
 
     await interaction.response.send_message(embed=embed)
 
+# /of2 command
+@bot.tree.command(name="of2", description="Calculate Overflow Time with 2 damages.")
+@app_commands.describe(hp="Boss HP", dmg1="First Damage dealt", dmg2="Second Damage dealt")
+async def of2(interaction: discord.Interaction, hp: float, dmg1: float, dmg2: float):
+    if dmg1 == 0 or dmg2 == 0:
+        await interaction.response.send_message("Error: DMG values cannot be zero.", ephemeral=True)
+        return
+
+    # Calculate Time1 and Time2
+    time1 = 110 - (90 * ((hp - dmg2) / dmg1))
+    time2 = 110 - (90 * ((hp - dmg1) / dmg2))
+    time1 = min(time1, 90)  # Cap at 90 seconds
+    time2 = min(time2, 90)
+
+    # Create embed
+    embed = discord.Embed(title="OVERFLOW TIME GIVEN WITH DAMAGE", color=discord.Color.purple())
+    embed.add_field(name="Boss HP", value=f"{hp}", inline=False)
+
+    # Damage 1
+    embed.add_field(name="Damage Dealt 1", value=f"{dmg1}", inline=False)
+    embed.add_field(name="Equation 1", value=f"overflow (seconds) = 110 - [90 * (({hp} - {dmg2}) / {dmg1})]", inline=False)
+    embed.add_field(name="Result 1", value=f"overflow (seconds) = `{time1:.2f}`", inline=False)
+
+    embed.add_field(name="\u200b", value="---------------------------------------------------------", inline=False)  # Divider line
+
+    # Damage 2
+    embed.add_field(name="Damage Dealt 2", value=f"{dmg2}", inline=False)
+    embed.add_field(name="Equation 2", value=f"overflow (seconds) = 110 - [90 * (({hp} - {dmg1}) / {dmg2})]", inline=False)
+    embed.add_field(name="Result 2", value=f"overflow (seconds) = `{time2:.2f}`", inline=False)
+
+    await interaction.response.send_message(embed=embed)
+
 # Sync commands on bot startup
 @bot.event
 async def on_ready():
