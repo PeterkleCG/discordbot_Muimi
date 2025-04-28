@@ -68,21 +68,43 @@ async def of2(interaction: discord.Interaction, hp: float, dmg1: float, dmg2: fl
     time1 = min(time1, 90)  # Cap at 90 seconds
     time2 = min(time2, 90)
 
+    # Format times into minutes:seconds
+    minutes1, seconds1 = divmod(int(time1), 60)
+    minutes2, seconds2 = divmod(int(time2), 60)
+    formatted_time1 = f"{minutes1}:{seconds1:02d}"
+    formatted_time2 = f"{minutes2}:{seconds2:02d}"
+
     # Create embed
     embed = discord.Embed(title="OVERFLOW TIME GIVEN WITH DAMAGE", color=discord.Color.purple())
-    embed.add_field(name="Boss HP", value=f"{hp}", inline=False)
+    embed.add_field(name="Boss HP", value=f"**{hp}**", inline=False)
 
-    # Damage 1
-    embed.add_field(name="Damage Dealt 1", value=f"{dmg1}", inline=False)
-    embed.add_field(name="Equation 1", value=f"overflow (seconds) = 110 - [90 * (({hp} - {dmg2}) / {dmg1})]", inline=False)
-    embed.add_field(name="Result 1", value=f"overflow (seconds) = `{time1:.2f}`", inline=False)
+    # Section for Damage 1
+    embed.add_field(name="🔹 Damage Dealt 1", value=f"**{dmg1}**", inline=False)
+    embed.add_field(
+        name="Equation 1",
+        value=f"overflow (seconds) = 110 - [90 × (({hp} - {dmg2}) ÷ {dmg1})]",
+        inline=False
+    )
+    embed.add_field(
+        name="Result 1",
+        value=f"overflow (seconds) = **{time1:.2f}** (`{formatted_time1}`)",
+        inline=False
+    )
 
-    embed.add_field(name="\u200b", value="---------------------------------------------------------", inline=False)  # Divider line
+    embed.add_field(name="\u200b", value="━━━━━━━━━━━━━━━━━━━━━━", inline=False)  # Stylish divider
 
-    # Damage 2
-    embed.add_field(name="Damage Dealt 2", value=f"{dmg2}", inline=False)
-    embed.add_field(name="Equation 2", value=f"overflow (seconds) = 110 - [90 * (({hp} - {dmg1}) / {dmg2})]", inline=False)
-    embed.add_field(name="Result 2", value=f"overflow (seconds) = `{time2:.2f}`", inline=False)
+    # Section for Damage 2
+    embed.add_field(name="🔹 Damage Dealt 2", value=f"**{dmg2}**", inline=False)
+    embed.add_field(
+        name="Equation 2",
+        value=f"overflow (seconds) = 110 - [90 × (({hp} - {dmg1}) ÷ {dmg2})]",
+        inline=False
+    )
+    embed.add_field(
+        name="Result 2",
+        value=f"overflow (seconds) = **{time2:.2f}** (`{formatted_time2}`)",
+        inline=False
+    )
 
     await interaction.response.send_message(embed=embed)
 
