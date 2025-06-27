@@ -17,8 +17,9 @@ class ShareView(discord.ui.View):
 
     @discord.ui.button(label="📢 แชร์ให้ทุกคนเห็น", style=discord.ButtonStyle.blurple)
     async def share(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.channel.send(embed=self.embed_to_share)
-        await interaction.response.edit_message(content="✅ แชร์เรียบร้อยแล้ว", view=None)
+        await interaction.response.defer()  # บอก Discord ว่าจะตอบทีหลัง (กัน Timeout)
+        await interaction.followup.send(embed=self.embed_to_share)
+        await interaction.edit_original_response(content="✅ แชร์เรียบร้อยแล้ว", view=None)
 
 
 @bot.command()
