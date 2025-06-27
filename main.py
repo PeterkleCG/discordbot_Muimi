@@ -38,7 +38,7 @@ async def overflow(interaction: discord.Interaction, hp: float, dmg: float):
     embed.add_field(name="Equation", value=f"overflow (seconds) = 110 - (90 * ({hp} / {dmg}))", inline=False)
     embed.add_field(name="Result", value=f"overflow (seconds) = `{time:.2f}` ({formatted_time})", inline=False)
 
-    await interaction.response.send_message(embed=embed)
+    await interaction.response.send_message(embed=embed, ephemeral=True)
 
 # Command: /ofm - Calculates Required DMG for Full Overflow
 @bot.tree.command(name="ofm", description="Calculate required DMG for full overflow time.")
@@ -52,7 +52,7 @@ async def overflow_max(interaction: discord.Interaction, hp: float):
     embed.add_field(name="Equation", value=f"DMG = {hp} / 0.2222", inline=False)
     embed.add_field(name="You will need to deal:", value=f"**{dmg:.2f}** DMG\nin order to get full overflow time.", inline=False)
 
-    await interaction.response.send_message(embed=embed)
+    await interaction.response.send_message(embed=embed, ephemeral=True)
 
 # /of2 command
 @bot.tree.command(name="of2", description="Calculate Overflow Time with 2 damages.")
@@ -112,7 +112,7 @@ async def of2(interaction: discord.Interaction, hp: float, dmg1: float, dmg2: fl
         inline=False
     )
 
-    await interaction.response.send_message(embed=embed)
+    await interaction.response.send_message(embed=embed, ephemeral=True)
 
 # Sync commands on bot startup
 @bot.event
